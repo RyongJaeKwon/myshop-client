@@ -1,19 +1,22 @@
-import { FiUser } from "react-icons/fi";
-import { BsCart2 } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import CategoryNav from "./CategoryNav";
+import Footer from "./Footer";
+import Header from "./Header";
 
-const Header = () => {
+const BaseLayout = ({children}) => {
     return (
-        <header className="bg-white text-black p-8">
-            <div className="container mx-auto flex justify-between items-center">
-                <div className="text-4xl font-bold">My Shop</div>
-                <div className="flex justify-end space-x-5">
-                    <Link to={'/member/login'}><FiUser size={33}/></Link>
-                    <Link to={'/member/cart'}><BsCart2 size={33}/></Link>
+        <div className="min-h-screen flex justify-center">
+            <div className="w-full max-w-screen-xl px-4 md:px-8 lg:px-20">
+                <Header/>
+                <hr className="my-4 border-gray-800"/>
+                <CategoryNav/>
+                <div className="bg-white shadow-sm border border-gray-100 min-h-screen">
+                    {children}
                 </div>
-            </div>    
-        </header>
+                
+                <Footer/>
+            </div>
+        </div>
     )
 }
 
-export default Header;
+export default BaseLayout;
