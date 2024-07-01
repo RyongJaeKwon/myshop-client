@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const CategoryNav = () => {
     return (
-        <nav className="bg-white text-black text-xl p-1">
+        <nav className="bg-white text-black text-xl">
             <div className="flex justify-between items-center">
                 <Link to={'/top/'} className="flex-grow text-center hover:bg-gray-300 py-2 px-2 rounded-full">상의</Link>
                 <Link to={'/pants/'} className="flex-grow text-center hover:bg-gray-300 py-3 px-2 rounded-full">하의</Link>
