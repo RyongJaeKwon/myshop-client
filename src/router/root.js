@@ -4,6 +4,7 @@ import memberRouter from "./memberRouter";
 
 const Loading = <div>Loading...</div>
 const Main = lazy(() => import("../pages/MainPage"))
+const MemberIndex = lazy(() => import("../pages/member/IndexPage"))
 
 const root = createBrowserRouter([
     {
@@ -12,6 +13,7 @@ const root = createBrowserRouter([
     },
     {
         path: "member",
+        element: <Suspense fallback={Loading}><MemberIndex/></Suspense>,
         children: memberRouter()
     }
 
