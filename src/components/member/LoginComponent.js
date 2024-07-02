@@ -1,20 +1,40 @@
 import { useState } from "react"
 import kakao from '../../img/kakao_login.png';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginPostAsync } from "../../slices/loginSlice";
 
 const initState = {
-    userid: '',
+    userId: '',
     password: ''
 }
 
 const LoginComponent = () => {
 
     const [loginParam, setLoginParam] = useState({...initState})
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const handleChange = (e) => {
         loginParam[e.target.name] = e.target.value
 
         setLoginParam({...loginParam})
+    }
+
+    const handleClickLogin = (e) => {
+        
+        dispatch(loginPostAsync(loginParam))
+        .unwrap()
+        .then(data => {
+            console.log("after unwrap....")
+            console.log(data)
+            if(data.error) {
+                alert("아이디와 패스워드를 다시 확인하세요")
+            }else {
+                alert("로그인 성공")
+                navigate({pathname:'/'}, {replace:true})
+            }
+        })
     }
 
     return (
@@ -25,9 +45,9 @@ const LoginComponent = () => {
 
             <div className="flex justify-center mt-3">
                 <input className="w-80 p-3 border border-gray-300 rounded-md"
-                name="userid"
+                name="userId"
                 type="{'text'}"
-                value={loginParam.userid}
+                value={loginParam.userId}
                 placeholder="아이디"
                 onChange={handleChange}></input>
             </div>
@@ -46,7 +66,7 @@ const LoginComponent = () => {
                     아이디/비밀번호 찾기
                 </button>
                 
-                <Link to={'/member/add'}>
+                <Link to={'/member/signup'}>
                     <button className="text-sm mr-4">
                         회원가입
                     </button>
@@ -55,7 +75,8 @@ const LoginComponent = () => {
 
             <div className="flex justify-center mt-12">
                 <button 
-                    className="flex justify-center items-center w-80 rounded p-3 bg-blue-500 text-xl text-white font-bold">
+                    className="flex justify-center items-center w-80 rounded p-3 bg-blue-500 text-xl text-white font-bold"
+                    onClick={handleClickLogin}>
                     로그인
                 </button>
             </div>
