@@ -7,7 +7,7 @@ const BaseLayout = ({children}) => {
     
     const location = useLocation();
     const isLoginPage = location.pathname === '/member/login';
-    const isLoginForm = location.pathname === '/member/add';
+    const isLoginForm = location.pathname === '/member/signup';
 
     return (
         <div className="min-h-screen flex justify-center">
