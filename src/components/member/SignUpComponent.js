@@ -1,33 +1,92 @@
 import { useState } from "react"
+import { emailCheck, memberSignUp, useridCheck } from "../../api/memberApi"
 
 const initState = {
-    userid: '',
+    userId: '',
     password: '',
     name: '',
     email: '',
     phone: '',
-    postcode: '',
-    basic_address: '',
-    detail_address: ''
+    address: {
+        postcode: '',
+        basic_address: '',
+        detail_address: ''
+    }
 }
 
 const SignUpComponent = () => {
     
     const [member, setMember] = useState({...initState})
     const [errors, setErrors] = useState({...initState})
+    const [userIdValid, setUserIdValid] = useState(null)
+    const [emailValid, setEmailValid] = useState(null)
 
     const handleChangeMember = (e) => {
-        member[e.target.name] = e.target.value
-        setMember({...member})
-        validateField(e.target.name, e.target.value)
+        const {name, value} = e.target
 
+        const updatedMember = {...member}
+
+        if (name.includes("address.")) {
+            const addressField = name.split(".")[1];
+            updatedMember.address = {...member.address, [addressField]: value}
+        } else {
+            updatedMember[name] = value
+        }
+
+        setMember(updatedMember)
+        validateField(name, value)
+
+    }
+
+    const handleUserIdCheck = async () => {
+        const res = await useridCheck(member.userId)
+            
+        if (res.message === '사용 가능한 아이디 입니다') {
+            setUserIdValid(true)
+            setErrors({...errors, userId: ''})
+        } else {
+            setUserIdValid(false)
+            setErrors({...errors, userId: res.message})
+        }
+    }
+
+    const handleEmailCheck = async () => {
+        const res = await emailCheck(member.email)
+
+        if (res.message === '사용 가능한 이메일 입니다') {
+            setEmailValid(true)
+            setErrors({...errors, email: ''})
+        } else {
+            setEmailValid(false)
+            setErrors({...errors, email: res.message})
+        }
+    }
+
+    const handleClickSignUp = () => {
+        if (!userIdValid) {
+            handleUserIdCheck()
+            if (!userIdValid) return
+        }
+
+        if (!emailValid) {
+            handleEmailCheck()
+            if (!emailValid) return
+        }
+
+        memberSignUp(member).then(res => {
+            console.log(res)
+
+            setMember({...initState})
+        }).catch(e => {
+            console.log(e)
+        })
     }
 
     const validateField = (fieldName, value) => {
         let error = '';
 
         switch(fieldName) {
-            case 'userid':
+            case 'userId':
                 if(!/^[a-zA-Z0-9]{5,12}$/.test(value)) {
                     error = '아이디는 영문 대소문자, 숫자로 구성된 5-12자까지 입력 가능합니다'
                 }
@@ -46,18 +105,18 @@ const SignUpComponent = () => {
                 break;
 
             case 'email':
-                if (!/\S+@\S+\.\S+/.test(value)) {
+                if (!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{3}$/.test(value)) {
                     error = '올바른 이메일 주소를 입력하세요';
                 }
                 break;
                 
             case 'phone':
-                if (!/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/.test(value)) {
+                if (!/^(010|011|016|017|018|019)-\d{3,4}-\d{4}$/.test(value)) {
                     error = '올바른 전화번호를 입력하세요 (000-0000-0000)';
                 }
                 break;
 
-            case 'postcode':
+            case 'address.postcode':
                 if (!/^\d{5}$/.test(value)) {
                     error = '우편번호는 5자리 숫자여야 합니다.';
                 }
@@ -67,7 +126,10 @@ const SignUpComponent = () => {
                 break;    
         }
 
-        setErrors({...errors, [fieldName]: error})
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            [fieldName]: error
+        }));
     }
 
     return (
@@ -77,19 +139,23 @@ const SignUpComponent = () => {
             </div>
 
             <div className="flex flex-col mt-10">
-            <div className="relative">
-                <input className={`w-4/5 p-3 border ${errors.userid ? 'border-red-500' : 'border-gray-500'} rounded-md`}
-                name="userid"
-                type="text"
-                value={member.userid}
-                placeholder="아이디"
-                onChange={handleChangeMember}></input>
-                
-                {errors.userid && <p className="text-sm text-red-500 mt-1">{errors.userid}</p>}
-                <button className="absolute right-0 top-0 px-4 py-3 border border-gray-300 rounded-md">
-                    중복확인
-                </button>
-            </div>
+                <div className="relative">
+                    <input className={`w-4/5 p-3 border ${errors.userId ? 'border-red-500' : userIdValid === true ? 'border-gray-300' : 'border-gray-300'} rounded-md`}
+                    name="userId"
+                    type="text"
+                    value={member.userId}
+                    placeholder="아이디"
+                    onChange={handleChangeMember}></input>
+                    
+                    {userIdValid === true && <p className="text-sm text-green-500 mt-1">사용 가능한 아이디 입니다</p>}
+                    {errors.userId && <p className="text-sm text-red-500 mt-1">{errors.userId}</p>}
+                    <button 
+                        className="absolute right-0 top-0 px-4 py-3 border border-gray-300 rounded-md"
+                        onClick={handleUserIdCheck}
+                    >
+                        중복확인
+                    </button>
+                </div>
             </div>
 
             <div className="flex flex-col mt-1">
@@ -115,14 +181,23 @@ const SignUpComponent = () => {
             </div>
 
             <div className="flex flex-col mt-1">
-                <input className={`w-full p-3 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md`}
-                name="email"
-                type="email"
-                value={member.email}
-                placeholder="이메일 (user@example.com)"
-                onChange={handleChangeMember}></input>
-
-            {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
+                <div className="relative">
+                    <input className={`w-4/5 p-3 border ${errors.email ? 'border-red-500' : emailValid === true ? 'border-gray-300' : 'border-gray-300'} rounded-md`}
+                    name="email"
+                    type="email"
+                    value={member.email}
+                    placeholder="이메일"
+                    onChange={handleChangeMember}></input>
+                    
+                    {emailValid === true && <p className="text-sm text-green-500 mt-1">사용 가능한 이메일 입니다</p>}
+                    {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
+                    <button 
+                        className="absolute right-0 top-0 px-4 py-3 border border-gray-300 rounded-md"
+                        onClick={handleEmailCheck}
+                    >
+                        중복확인
+                    </button>
+                </div>
             </div>
 
             <div className="flex flex-col mt-1">
@@ -137,38 +212,38 @@ const SignUpComponent = () => {
             </div>
 
             <div className="flex flex-col mt-1">
-                <input className={`w-full p-3 border ${errors.postcode ? 'border-red-500' : 'border-gray-300'} rounded-md`}
-                name="postcode"
+                <input className={`w-full p-3 border ${errors.address.postcode ? 'border-red-500' : 'border-gray-300'} rounded-md`}
+                name="address.postcode"
                 type="number"
-                step="1"
-                value={member.postcode}
+                value={member.address.postcode}
                 placeholder="우편번호 5자리"
                 onChange={handleChangeMember}></input>
 
-            {errors.postcode && <p className="text-sm text-red-500 mt-1">{errors.postcode}</p>}
+            {errors.address.postcode && <p className="text-sm text-red-500 mt-1">{errors.address.postcode}</p>}
             </div>
 
             <div className="flex mt-1">
                 <input className="w-full p-3 border border-gray-300 rounded-md"
-                name="basic_address"
+                name="address.basic_address"
                 type="text"
-                value={member.basic_address}
+                value={member.address.basic_address}
                 placeholder="기본 주소"
                 onChange={handleChangeMember}></input>
             </div>
 
             <div className="flex mt-1">
                 <input className="w-full p-3 border border-gray-300 rounded-md"
-                name="detail_address"
+                name="address.detail_address"
                 type="text"
-                value={member.detail_address}
+                value={member.address.detail_address}
                 placeholder="상세 주소"
                 onChange={handleChangeMember}></input>
             </div>
 
             <div className="flex justify-center mt-3">
                 <button 
-                    className="flex justify-center items-center w-80 rounded p-3 bg-blue-500 text-xl text-white font-bold">
+                    className="flex justify-center items-center w-80 rounded p-3 bg-blue-500 text-xl text-white font-bold"
+                    onClick={handleClickSignUp}>
                     가입하기
                 </button>
             </div>
