@@ -12,6 +12,7 @@ const initState = {
 const LoginComponent = () => {
 
     const [loginParam, setLoginParam] = useState({...initState})
+    const [errMsg, setErrMsg] = useState('')
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -22,25 +23,23 @@ const LoginComponent = () => {
     }
 
     const handleClickLogin = (e) => {
-        
         dispatch(loginPostAsync(loginParam))
         .unwrap()
         .then(data => {
-            console.log("after unwrap....")
             console.log(data)
             if(data.error) {
-                alert("아이디와 패스워드를 다시 확인하세요")
+                setErrMsg('아이디와 패스워드를 다시 확인해주세요')
             }else {
-                alert("로그인 성공")
+                setErrMsg('')
                 navigate({pathname:'/'}, {replace:true})
             }
         })
     }
 
     return (
-        <div className="border-2 border-green-300 p-4 w-96">
+        <div className="border-2 border-blue-300 p-4 w-96">
             <div className="flex justify-center">
-                <div className="text-3xl m-4 p-4 text-emerald-400 font-bold">My Shop</div>
+                <div className="text-3xl m-4 p-4 text-sky-400 font-bold">My Shop</div>
             </div>
 
             <div className="flex justify-center mt-3">
@@ -71,6 +70,10 @@ const LoginComponent = () => {
                         회원가입
                     </button>
                 </Link>
+            </div>
+
+            <div className="flex justify-center mt-10">
+                <p className="text-sm text-red-500">{errMsg}</p>
             </div>
 
             <div className="flex justify-center mt-12">
