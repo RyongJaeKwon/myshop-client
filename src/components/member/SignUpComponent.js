@@ -1,5 +1,7 @@
 import { useState } from "react"
 import { emailCheck, memberSignUp, useridCheck } from "../../api/memberApi"
+import ResultModal from "../common/ResultModal"
+import { useNavigate } from "react-router-dom"
 
 const initState = {
     userId: '',
@@ -20,6 +22,8 @@ const SignUpComponent = () => {
     const [errors, setErrors] = useState({...initState})
     const [userIdValid, setUserIdValid] = useState(null)
     const [emailValid, setEmailValid] = useState(null)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const navigate = useNavigate()
 
     const handleChangeMember = (e) => {
         const {name, value} = e.target
@@ -73,13 +77,17 @@ const SignUpComponent = () => {
             if (!emailValid) return
         }
 
-        memberSignUp(member).then(res => {
-            console.log(res)
-
+        memberSignUp(member).then(() => {
+            setIsModalOpen(true)
             setMember({...initState})
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    const closeModal = () => {
+        setIsModalOpen(false)
+        navigate('/member/login')
     }
 
     const validateField = (fieldName, value) => {
@@ -133,9 +141,10 @@ const SignUpComponent = () => {
     }
 
     return (
-        <div className="border-2 border-green-300 p-4 w-2/3">
+        <div className="border-2 border-blue-300 p-4 w-2/3">
+            {isModalOpen ? <ResultModal content={'회원가입이 완료되었습니다'} callbackFn={closeModal}/> : <></>}
             <div className="flex justify-center">
-                <div className="text-2xl m-2 text-emerald-400 font-bold">회원정보 입력</div>
+                <div className="text-2xl m-2 text-sky-400 font-bold">회원정보 입력</div>
             </div>
 
             <div className="flex flex-col mt-10">
@@ -150,7 +159,7 @@ const SignUpComponent = () => {
                     {userIdValid === true && <p className="text-sm text-green-500 mt-1">사용 가능한 아이디 입니다</p>}
                     {errors.userId && <p className="text-sm text-red-500 mt-1">{errors.userId}</p>}
                     <button 
-                        className="absolute right-0 top-0 px-4 py-3 border border-gray-300 rounded-md"
+                        className="absolute right-0 top-0 px-4 py-3 bg-blue-500 text-white font-bold border border-gray-300 rounded-md"
                         onClick={handleUserIdCheck}
                     >
                         중복확인
@@ -192,7 +201,7 @@ const SignUpComponent = () => {
                     {emailValid === true && <p className="text-sm text-green-500 mt-1">사용 가능한 이메일 입니다</p>}
                     {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
                     <button 
-                        className="absolute right-0 top-0 px-4 py-3 border border-gray-300 rounded-md"
+                        className="absolute right-0 top-0 px-4 py-3 bg-blue-500 text-white font-bold border border-gray-300 rounded-md"
                         onClick={handleEmailCheck}
                     >
                         중복확인
