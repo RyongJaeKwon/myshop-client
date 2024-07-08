@@ -5,6 +5,7 @@ import { getCookie, removeCookie, setCookie } from "../util/cookieManager"
 const initState = {
     userId: '',
     email: '',
+    role: ''
 }
 
 const memberCookie = () => {
