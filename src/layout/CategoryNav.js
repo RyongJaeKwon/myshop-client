@@ -4,13 +4,14 @@ const CategoryNav = () => {
     return (
         <nav className="bg-white text-black text-xl">
             <div className="flex justify-between items-center">
-                <Link to={'/top/'} className="flex-grow text-center hover:bg-gray-300 py-2 px-2 rounded-full">상의</Link>
-                <Link to={'/pants/'} className="flex-grow text-center hover:bg-gray-300 py-3 px-2 rounded-full">하의</Link>
-                <Link to={'/outer/'} className="flex-grow text-center hover:bg-gray-300 py-3 px-2 rounded-full">아우터</Link>
-                <Link to={'/cap/'} className="flex-grow text-center hover:bg-gray-300 py-3 px-2 rounded-full">모자</Link>
-                <Link to={'/shoes/'} className="flex-grow text-center hover:bg-gray-300 py-3 px-2 rounded-full">신발</Link>
-                <Link to={'/bag/'} className="flex-grow text-center hover:bg-gray-300 py-3 px-2 rounded-full">가방</Link>
-                <Link to={'/acc/'} className="flex-grow text-center hover:bg-gray-300 py-3 px-2 rounded-full">악세서리</Link>
+                <Link to={'/'} className="flex-grow text-center hover:bg-gray-300 py-2 px-2 rounded-full">ALL</Link>
+                <Link to={'/items/top/'} className="flex-grow text-center hover:bg-gray-300 py-2 px-2 rounded-full">TOP</Link>
+                <Link to={'/items/pants/'} className="flex-grow text-center hover:bg-gray-300 py-3 px-2 rounded-full">BOTTOM</Link>
+                <Link to={'/items/outer/'} className="flex-grow text-center hover:bg-gray-300 py-3 px-2 rounded-full">OUTER</Link>
+                <Link to={'/items/cap/'} className="flex-grow text-center hover:bg-gray-300 py-3 px-2 rounded-full">HAT</Link>
+                <Link to={'/items/shoes/'} className="flex-grow text-center hover:bg-gray-300 py-3 px-2 rounded-full">SHOES</Link>
+                <Link to={'/items/bag/'} className="flex-grow text-center hover:bg-gray-300 py-3 px-2 rounded-full">BAG</Link>
+                <Link to={'/items/acc/'} className="flex-grow text-center hover:bg-gray-300 py-3 px-2 rounded-full">ACC</Link>
             </div>
         </nav>
     )
