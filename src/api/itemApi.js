@@ -11,10 +11,8 @@ export const itemPost = async (formData) => {
     return res.data
 }
 
-export const getRecentList = async (pageParam) => {
-    const {page, size} = pageParam
-
-    const res = await axios.get(`${host}/`, {params:{page:page, size:size}})
+export const getRecentList = async () => {
+    const res = await axios.get(`${host}/`)
     
     return res.data
 }
