@@ -3,7 +3,7 @@ import CategoryNav from "./CategoryNav";
 import Footer from "./Footer";
 import Header from "./Header";
 
-const BaseLayout = ({children}) => {
+const BaseLayout = ({children, toggleRefresh}) => {
     
     const location = useLocation();
     const isLoginPage = location.pathname === '/member/login';
@@ -14,7 +14,7 @@ const BaseLayout = ({children}) => {
             <div className="w-full max-w-screen-xl px-4 md:px-8 lg:px-20">
                 <Header/>
                 <hr className="my-4 border-gray-800"/>
-                {!isLoginPage && !isLoginForm ? <CategoryNav/> : <></>}
+                {!isLoginPage && !isLoginForm ? <CategoryNav toggleRefresh={toggleRefresh}/> : <></>}
                 <div className="min-h-screen">
                     {children}
                 </div>
