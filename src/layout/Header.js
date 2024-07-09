@@ -4,27 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoIosLogOut } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../slices/loginSlice";
-import { useState } from "react";
-import ItemModal from "../components/common/ItemModal";
 
 
 const Header = () => {
     const loginState = useSelector(state => state.loginSlice)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const [isModalOpen, setIsModalOpen] = useState(false)
 
     const handleLogout = () => {
         dispatch(logout())
-        navigate('/')
-    }
-
-    const openModal = () => {
-        setIsModalOpen(true);
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false)
         navigate('/')
     }
 
@@ -41,12 +29,6 @@ const Header = () => {
                 </div>
                 :
                 <>
-                        {loginState.role === 'ROLE_ADMIN' &&
-                            <button className="flex items-center mr-2 p-2 border border-blue-400 rounded-md bg-blue-400"
-                            onClick={openModal}>
-                                <span className="text-white font-bold">상품 등록</span>
-                            </button>
-                        }
                 <div>
                     <button onClick={handleLogout} className="text-black"><IoIosLogOut size={30} /></button>
                 </div>
@@ -56,8 +38,6 @@ const Header = () => {
                 </>
                 }
             </div>
-
-            {isModalOpen && <ItemModal callbackFn={closeModal} />}
         </div>
     );
 }
