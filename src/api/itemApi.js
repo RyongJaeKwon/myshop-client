@@ -16,3 +16,11 @@ export const getRecentList = async () => {
     
     return res.data
 }
+
+export const getRecentCategoryList = async (pageParam) => {
+    const {category, page, size} = pageParam
+
+    const res = await axios.get(`${host}/${category}/list`, {params:{page:page, size:size}})
+
+    return res.data
+}
