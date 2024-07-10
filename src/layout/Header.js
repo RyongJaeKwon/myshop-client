@@ -19,7 +19,7 @@ const Header = () => {
     return (
         <div className="flex justify-between items-center relative p-4">
             <div className="absolute left-1/2 transform -translate-x-1/2 text-4xl font-bold">
-                My Shop
+                <Link to={'/'}>My Shop</Link>
             </div>
 
             <div className="flex ml-auto gap-4">
