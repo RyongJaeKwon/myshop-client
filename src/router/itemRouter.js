@@ -7,6 +7,7 @@ const OuterPage = lazy(() => import("../pages/item/OuterPage"))
 const HatPage = lazy(() => import("../pages/item/HatPage"))
 const ShoesPage = lazy(() => import("../pages/item/ShoesPage"))
 const AccPage = lazy(() => import("../pages/item/AccPage"))
+const ItemRead = lazy(() => import("../pages/item/ReadPage"))
 
 const itemRouter = () => {
     return [
@@ -33,6 +34,10 @@ const itemRouter = () => {
         {
             path: "acc",
             element: <Suspense fallback={Loading}><AccPage/></Suspense>
+        },
+        {
+            path: ":category/:id",
+            element: <Suspense fallback={Loading}><ItemRead/></Suspense>
         }
     ]
 }
