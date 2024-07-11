@@ -13,12 +13,12 @@ const initState = {
     files: []
 }
 
-const ItemAddModal = ({callbackFn, toggleRefresh}) => {
-    const [files, setFiles] = useState([]);
-    const [previews, setPreviews] = useState([]);
+const ItemAddModal = ({closeAddModal, toggleRefresh}) => {
+    const [files, setFiles] = useState([])
+    const [previews, setPreviews] = useState([])
     const uploadRef = useRef()
     const [isResultModalOpen, setIsResultModalOpen] = useState(false)
-    const [item, setItem] = useState({...initState});
+    const [item, setItem] = useState({...initState})
 
     const handleFileChange = (e) => {
         const selectedFiles = Array.from(e.target.files);
@@ -33,18 +33,19 @@ const ItemAddModal = ({callbackFn, toggleRefresh}) => {
 
     const handleClickAdd = (e) => {
         const files = uploadRef.current.files
-        const formData = new FormData();
+        const formData = new FormData()
+
         for(let i=0; i<files.length; i++){
             formData.append("files", files[i])
         }
 
-        formData.append("category", item.category);
-        formData.append("itemName", item.itemName);
-        formData.append("size", item.size);
-        formData.append("color", item.color);
-        formData.append("itemInfo", item.itemInfo);
-        formData.append("price", item.price);
-        formData.append("brand", item.brand);
+        formData.append("category", item.category)
+        formData.append("itemName", item.itemName)
+        formData.append("size", item.size)
+        formData.append("color", item.color)
+        formData.append("itemInfo", item.itemInfo)
+        formData.append("price", item.price)
+        formData.append("brand", item.brand)
 
         itemPost(formData).then(data => {
             setIsResultModalOpen(true)
@@ -54,11 +55,10 @@ const ItemAddModal = ({callbackFn, toggleRefresh}) => {
         })
     };
 
-
     const closeResultModal = () => {
-        setIsResultModalOpen(false);
+        closeAddModal()
         toggleRefresh()
-        callbackFn()
+        setIsResultModalOpen(false)
     };
 
     return (
@@ -194,7 +194,7 @@ const ItemAddModal = ({callbackFn, toggleRefresh}) => {
                     <button
                         type="button"
                         className="px-4 py-2 bg-gray-300 rounded-md"
-                        onClick={callbackFn}
+                        onClick={closeAddModal}
                     >
                         취소
                     </button>
