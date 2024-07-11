@@ -1,6 +1,6 @@
 import { useState } from "react"
 import kakao from '../../img/kakao_login.png';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginPostAsync } from "../../slices/loginSlice";
 
@@ -15,6 +15,7 @@ const LoginComponent = () => {
     const [errMsg, setErrMsg] = useState('')
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const location = useLocation()
 
     const handleChange = (e) => {
         loginParam[e.target.name] = e.target.value
@@ -22,18 +23,21 @@ const LoginComponent = () => {
         setLoginParam({...loginParam})
     }
 
-    const handleClickLogin = (e) => {
-        dispatch(loginPostAsync(loginParam))
-        .unwrap()
-        .then(data => {
-            console.log(data)
-            if(data.error) {
+    const handleClickLogin = async (e) => {
+        try {
+            const data = await dispatch(loginPostAsync(loginParam))
+
+            if (data.error) {
                 setErrMsg('아이디와 패스워드를 다시 확인해주세요')
-            }else {
+            } else {
                 setErrMsg('')
-                navigate({pathname:'/'}, {replace:true})
+                const from = location.state?.from || '/'
+                navigate(from, {replace: true})
             }
-        })
+        } catch (error) {
+            console.error("Login failed", error)
+            setErrMsg('로그인에 실패했습니다')
+        }
     }
 
     return (
