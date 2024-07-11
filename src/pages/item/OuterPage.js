@@ -27,7 +27,6 @@ const OuterPage = () => {
         const fetchRecentItems = async () => {
             try {
                 const data = await getRecentCategoryList({ category: "outer", page, size });
-                console.log(data);
                 setServerData(data);
             } catch (error) {
                 console.error("error: ", error);

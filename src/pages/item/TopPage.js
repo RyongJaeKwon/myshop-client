@@ -27,7 +27,6 @@ const TopPage = () => {
         const fetchRecentItems = async () => {
             try {
                 const data = await getRecentCategoryList({ category: "top", page, size });
-                console.log(data);
                 setServerData(data);
             } catch (error) {
                 console.error("error: ", error);

@@ -27,7 +27,6 @@ const AccPage = () => {
         const fetchRecentItems = async () => {
             try {
                 const data = await getRecentCategoryList({ category: "acc", page, size });
-                console.log(data);
                 setServerData(data);
             } catch (error) {
                 console.error("error: ", error);

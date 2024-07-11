@@ -27,7 +27,6 @@ const ShoesPage = () => {
         const fetchRecentItems = async () => {
             try {
                 const data = await getRecentCategoryList({ category: "shoes", page, size });
-                console.log(data);
                 setServerData(data);
             } catch (error) {
                 console.error("error: ", error);
