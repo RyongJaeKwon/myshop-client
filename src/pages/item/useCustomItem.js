@@ -29,7 +29,24 @@ const useCustomItem = (category) => {
         navigate({pathname:`/items/${category}`, search:queryStr})
     }
 
-    return {page, size, moveToList}
+    const moveToRead = (param) => {
+        const {category, id, page, size} = param
+        let queryStr = ""
+        
+        if(param){
+            const pageNum = getNum(page, 1)
+            const sizeNum = getNum(size, 6)
+
+            queryStr = createSearchParams({page:pageNum, size:sizeNum}).toString()
+        }else {
+            queryStr = queryDefault
+        }
+
+        navigate({pathname:`/items/${category}/${id}`, search:queryStr})
+
+    }
+
+    return {page, size, moveToList, moveToRead}
 }
 
 export default useCustomItem
