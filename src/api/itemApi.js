@@ -24,3 +24,23 @@ export const getRecentCategoryList = async (pageParam) => {
 
     return res.data
 }
+
+export const getOne = async (id) => {
+    const res = await axios.get(`${host}/${id}`)
+
+    return res.data
+}
+
+export const putOne = async (id, item) => {
+    const header = {headers: {"Content-Type": "multipart/form-data"}}
+
+    const res = await axios.put(`${host}/${id}`, item, header)
+
+    return res.data
+}
+
+export const deleteOne = async (id) => {
+    const res = await axios.delete(`${host}/${id}`)
+
+    return res.data
+}
