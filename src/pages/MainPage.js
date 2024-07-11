@@ -10,7 +10,6 @@ const [refresh, setRefresh] = useState(false)
 
 useEffect(() => {
     fetchRecentItems();
-    console.log(refresh)
 }, [refresh]);
 
 const fetchRecentItems = async () => {
