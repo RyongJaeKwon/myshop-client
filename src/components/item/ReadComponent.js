@@ -5,6 +5,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ItemUpdateModal from "./ItemUpdateModal";
 import ItemDeleteModal from "./ItemDeleteModal";
+import useCustomItem from "../../pages/item/useCustomItem";
 
 const initState = {
     id: 0,
@@ -30,21 +31,24 @@ const ReadComponent = () => {
     const location = useLocation()
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-    const [loding, setLoding] = useState(true)
+    const [loading, setLoading] = useState(true)
     const [refresh, setRefresh] = useState(false)
+    const {exceptionHandle} = useCustomItem()
 
     useEffect(() => {
         const getItem = async () => {
             try {
                 const data = await getOne(id)
                 setServerData(data);
-                setLoding(false)
+                setLoading(false)
             } catch (error) {
                 console.error("error: ", error)
+                exceptionHandle(error)
             }
         }
 
         getItem()
+        // eslint-disable-next-line
     }, [id, refresh])
 
     const handleButtonClick = (action) => {
@@ -92,7 +96,7 @@ const ReadComponent = () => {
         setRefresh(!refresh);
     };
 
-    if (loding) {
+    if (loading) {
         return <div>Loading...</div>
     }
 
