@@ -1,8 +1,8 @@
 import { useState } from "react"
-import kakao from '../../img/kakao_login.png';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginPostAsync } from "../../slices/loginSlice";
+import KakaoLoginComponent from "./KakaoLoginComponent";
 
 const initState = {
     userId: '',
@@ -10,7 +10,6 @@ const initState = {
 }
 
 const LoginComponent = () => {
-
     const [loginParam, setLoginParam] = useState({...initState})
     const [errMsg, setErrMsg] = useState('')
     const navigate = useNavigate()
@@ -25,18 +24,18 @@ const LoginComponent = () => {
 
     const handleClickLogin = async (e) => {
         try {
-            const data = await dispatch(loginPostAsync(loginParam))
-
+            const data = await dispatch(loginPostAsync(loginParam));
+    
             if (data.error) {
-                setErrMsg('아이디와 패스워드를 다시 확인해주세요')
+                setErrMsg('아이디와 패스워드를 다시 확인해주세요');
             } else {
-                setErrMsg('')
-                const from = location.state?.from || '/'
-                navigate(from, {replace: true})
+                setErrMsg('');
+                const from = location.state?.from || '/';
+                navigate(from, { replace: true });
             }
         } catch (error) {
-            console.error("Login failed", error)
-            setErrMsg('로그인에 실패했습니다')
+            console.error("Login failed", error);
+            setErrMsg('로그인에 실패했습니다');
         }
     }
 
@@ -87,11 +86,7 @@ const LoginComponent = () => {
                     로그인
                 </button>
             </div>
-            <div className="flex justify-center mt-2">
-                <button className="w-80 rounded" >
-                    <img src={kakao} alt="kakao_login" className="mb-5"/>
-                </button>
-            </div>
+            <KakaoLoginComponent/>
         </div>
     )
 }
