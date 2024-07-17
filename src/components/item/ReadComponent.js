@@ -52,14 +52,10 @@ const ReadComponent = () => {
     }, [id, refresh])
 
     const handleButtonClick = (action) => {
-        if (!loginState.userId) {
-            navigate("/member/login", {state: {from: location.pathname + location.search}})
-        } else {
-            if (action === "cart") {
-                console.log("장바구니에 추가")
-            } else if (action === "buy") {
-                console.log("구매하기");
-            }
+        if (action === "cart") {
+            console.log("장바구니에 추가")
+        } else if (action === "buy") {
+            console.log("구매하기");
         }
     }
 
