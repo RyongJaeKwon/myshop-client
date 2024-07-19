@@ -4,12 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoIosLogOut } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../slices/loginSlice";
+import useCartHook from "../hooks/useCartHook";
 
 
 const Header = () => {
     const loginState = useSelector(state => state.loginSlice)
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const {cartItemList} = useCartHook()
 
     const handleLogout = () => {
         dispatch(logout())
@@ -33,7 +35,13 @@ const Header = () => {
                     <button onClick={handleLogout} className="text-black"><IoIosLogOut size={30} /></button>
                 </div>
                 <div>
-                    <Link to={'/member/cart'} className="text-black"><BsCart2 size={30} /></Link>
+                    <Link to={'/cart/list'} className="text-black"><BsCart2 size={30} />
+                    {cartItemList.length > 0 && (
+                        <span className="absolute top-1 right-0 flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-blue-600 rounded-full">
+                            {cartItemList.length}
+                        </span>
+                    )}
+                    </Link>
                 </div>
                 </>
                 }
