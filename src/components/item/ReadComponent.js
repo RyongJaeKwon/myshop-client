@@ -5,7 +5,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ItemUpdateModal from "./ItemUpdateModal";
 import ItemDeleteModal from "./ItemDeleteModal";
-import useCustomItem from "../../pages/item/useCustomItem";
+import useItemHook from "../../hooks/useItemHook";
 
 const initState = {
     id: 0,
@@ -33,7 +33,7 @@ const ReadComponent = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
     const [loading, setLoading] = useState(true)
     const [refresh, setRefresh] = useState(false)
-    const {exceptionHandle} = useCustomItem()
+    const {exceptionHandle} = useItemHook()
 
     useEffect(() => {
         const getItem = async () => {
