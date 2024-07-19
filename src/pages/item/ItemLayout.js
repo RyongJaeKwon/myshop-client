@@ -1,9 +1,9 @@
 import { API_SERVER_HOST } from "../../api/memberApi"
-import useCustomItem from "./useCustomItem"
+import useItemHook from "../../hooks/useItemHook"
 
 const ItemLayout = ({item, toggleRefresh}) => {
     const host = API_SERVER_HOST
-    const { moveToRead, page, size } = useCustomItem()
+    const { moveToRead, page, size } = useItemHook()
 
     const handleClickImage = (e) => {
         moveToRead({category: item.category, id:item.id, page, size, toggleRefresh})

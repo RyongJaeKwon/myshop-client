@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
-import useCustomItem from "./useCustomItem"
 import GridLayout from "./GridLayout"
 import Pagenation from "../../components/common/Pagination"
 import ItemLayout from "./ItemLayout"
 import { getRecentCategoryList } from "../../api/itemApi"
+import useItemHook from "../../hooks/useItemHook"
 
 const initState = {
     dtoList: [],
@@ -21,7 +21,7 @@ const initState = {
 
 const OuterPage = () => {
     const [serverData, setServerData] = useState(initState)
-    const {page, size, moveToList} = useCustomItem("outer")
+    const {page, size, moveToList} = useItemHook("outer")
 
     useEffect(() => {
         const fetchRecentItems = async () => {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import useCustomItem from "./useCustomItem"
+import useItemHook from "../../hooks/useItemHook"
 import GridLayout from "./GridLayout"
 import ItemLayout from "./ItemLayout"
 import Pagenation from "../../components/common/Pagination"
@@ -21,7 +21,7 @@ const initState = {
 
 const HatPage = () => {
     const [serverData, setServerData] = useState(initState)
-    const {page, size, moveToList} = useCustomItem("hat")
+    const {page, size, moveToList} = useItemHook("hat")
 
     useEffect(() => {
         const fetchRecentItems = async () => {
