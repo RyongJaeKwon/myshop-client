@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import ItemUpdateModal from "./ItemUpdateModal";
 import ItemDeleteModal from "./ItemDeleteModal";
 import useItemHook from "../../hooks/useItemHook";
+import useCartHook from "../../hooks/useCartHook";
+import CartAddModal from "../cart/CartAddModal";
 
 const initState = {
     id: 0,
@@ -31,9 +33,11 @@ const ReadComponent = () => {
     const location = useLocation()
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+    const [isCartModalOpen, setIsCartModalOpen] = useState(false)
     const [loading, setLoading] = useState(true)
     const [refresh, setRefresh] = useState(false)
     const {exceptionHandle} = useItemHook()
+    const {changeCart, moveToCart, cartItemList} = useCartHook()
 
     useEffect(() => {
         const getItem = async () => {
@@ -52,9 +56,7 @@ const ReadComponent = () => {
     }, [id, refresh])
 
     const handleButtonClick = (action) => {
-        if (action === "cart") {
-            console.log("장바구니에 추가")
-        } else if (action === "buy") {
+        if (action === "buy") {
             console.log("구매하기");
         }
     }
@@ -68,6 +70,22 @@ const ReadComponent = () => {
         } catch (error) {
             console.error("error: ", error)
         }
+    }
+
+    const handleCartClick = () => {
+        let itemId = serverData.id
+        let userId = loginState.userId
+        const currentCartItem = cartItemList.find(item => item.itemId === Number(id));
+        const currentQuantity = currentCartItem ? currentCartItem.quantity : 0
+        console.log("currentQuantity: ", currentQuantity)
+
+        changeCart({userId: userId, itemId: itemId, quantity: currentQuantity + 1})
+        setIsCartModalOpen(true)
+    }
+
+    const closeCartModal = () => {
+        setIsCartModalOpen(false)
+        navigate(`/items/${category}/${id}${location.search}`, {replace:true})
     }
 
     const openUpdateModal = () => {
@@ -136,7 +154,7 @@ const ReadComponent = () => {
 
                             <div className="flex justify-between items-center mt-10">
                                 <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md mr-2 flex-1"
-                                        onClick={() => handleButtonClick("cart")}>장바구니</button>
+                                        onClick={() => handleCartClick()}>장바구니</button>
                                 <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex-1"
                                         onClick={() => handleButtonClick("buy")}>구매하기</button>
                             </div>
@@ -155,6 +173,7 @@ const ReadComponent = () => {
                 </div>
                 {isUpdateModalOpen && <ItemUpdateModal toggleRefresh={toggleRefresh} closeUpdateModal={closeUpdateModal} itemId={id}/>}
                 {isDeleteModalOpen && <ItemDeleteModal handleDeleteClick={handleDeleteClick} content={ `${serverData.itemName} 상품을 삭제하시겠습니까?`} callbackFn={closeDeleteModal}/>}
+                {isCartModalOpen && <CartAddModal moveToCart={moveToCart} callbackFn={closeCartModal} content={`${serverData.itemName} 상품이 장바구니에 담겼습니다`}/>}
             </div>
     );
 }
