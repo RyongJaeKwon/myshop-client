@@ -44,6 +44,7 @@ const CartComponent = () => {
             quantity: quantity[item.cartItemId],
             userId: loginState.userId
         })
+
     }
 
     const handleClickDelete = (cartItemId) => {
@@ -54,7 +55,7 @@ const CartComponent = () => {
         <div className="w-full h-full p-4">
             <div className="flex flex-col gap-4 mt-5">
                 {cartItemList.length === 0 ? (
-                    <></>
+                    <p className="flex justify-center font-bold">장바구니가 비어있습니다</p>
                 ) : (
                     cartItemList.map(item => (
                         <div key={item.cartItemId} className="relative flex justify-between items-center p-4 border-b border-gray-200">
