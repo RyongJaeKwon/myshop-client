@@ -29,6 +29,7 @@ const ReadComponent = () => {
     const [serverData, setServerData] = useState(initState)
     const host = API_SERVER_HOST
     const loginState = useSelector(state => state.loginSlice)
+    const cartItemList = useSelector(state => state.cartSlice.cartItemList)
     const navigate = useNavigate()
     const location = useLocation()
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
@@ -37,7 +38,7 @@ const ReadComponent = () => {
     const [loading, setLoading] = useState(true)
     const [refresh, setRefresh] = useState(false)
     const {exceptionHandle} = useItemHook()
-    const {changeCart, moveToCart, cartItemList} = useCartHook()
+    const {changeCart, moveToCart} = useCartHook()
 
     useEffect(() => {
         const getItem = async () => {
