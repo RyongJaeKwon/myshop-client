@@ -6,8 +6,9 @@ const redirect_uri = `http://localhost:3000/member/kakao`
 const auth_code_path = `https://kauth.kakao.com/oauth/authorize`
 const access_token_url = `https://kauth.kakao.com/oauth/token`
 
-export const getKakaoLoginLink = () => {
-    const kakaoURL = `${auth_code_path}?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
+export const getKakaoLoginLink = (from) => {
+    const state = encodeURIComponent(from)
+    const kakaoURL = `${auth_code_path}?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code&state=${state}`;
 
     return kakaoURL
 }
