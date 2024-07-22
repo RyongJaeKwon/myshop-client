@@ -40,10 +40,7 @@ const loginSlice = createSlice({
     initialState: memberCookie() || initState,
     reducers: {
         login: (state, action) => {
-            const data = action.payload
             setCookie("member", JSON.stringify(data), 1);
-
-            return data
         },
         logout: (state) => {
             removeCookie("member")
@@ -66,7 +63,7 @@ const loginSlice = createSlice({
         })
         .addCase(loginAsync.fulfilled, (state, action) => {
             const data = action.payload
-            
+
             return data
         })
     }
