@@ -1,6 +1,8 @@
 import axios from "axios";
 import { getCookie, setCookie } from "../util/cookieManager";
 import { API_SERVER_HOST } from "./memberApi";
+import store from "../store";
+import { logout } from "../slices/loginSlice";
 
 const apiAxios = axios.create()
 
@@ -55,6 +57,7 @@ apiAxios.interceptors.response.use(
                 originalRequest.headers.Authorization = `Bearer ${accessToken}`
                 return apiAxios(originalRequest)
             } catch (error) {
+                store.dispatch(logout())
                 return Promise.reject(error)
             }
         }
