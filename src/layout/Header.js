@@ -4,14 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoIosLogOut } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../slices/loginSlice";
-import useCartHook from "../hooks/useCartHook";
 
 
 const Header = () => {
     const loginState = useSelector(state => state.loginSlice)
+    const cartItemList = useSelector(state => state.cartSlice.cartItemList)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {cartItemList} = useCartHook()
 
     const handleLogout = () => {
         dispatch(logout())
