@@ -4,8 +4,9 @@ import { API_SERVER_HOST } from "../../api/memberApi"
 import { useSelector } from "react-redux"
 
 const CartComponent = () => {
-    const{ cartItemList, changeCart, deleteCartItem } = useCartHook()
+    const{ changeCart, deleteCartItem } = useCartHook()
     const loginState = useSelector(state => state.loginSlice)
+    const cartItemList = useSelector(state => state.cartSlice.cartItemList)
     const [quantity, setQuantity] = useState({})
     const host = API_SERVER_HOST
 
