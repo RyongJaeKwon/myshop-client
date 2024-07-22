@@ -1,10 +1,9 @@
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { deleteOneAsync, getCartItemsAsync, postChangeCartAsync } from "../slices/cartSlice"
-import { useCallback, useEffect } from "react"
+import { useCallback } from "react"
 import { useNavigate } from "react-router-dom"
 
 const useCartHook = () => {
-    const cartItemList = useSelector(state => state.cartSlice.cartItemList)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -24,11 +23,7 @@ const useCartHook = () => {
         navigate('/cart/list')
     }
 
-    useEffect(() => {
-        refreshCart()
-    }, [refreshCart])
-
-    return {changeCart, refreshCart, deleteCartItem, moveToCart, cartItemList: cartItemList}
+    return {changeCart, refreshCart, deleteCartItem, moveToCart}
 
 }
 
