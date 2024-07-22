@@ -6,7 +6,6 @@ import { setCookie } from "../../util/cookieManager";
 
 const initState = {
     userId: '',
-    Password: '',
     name: '',
     phone: '',
     address: {
@@ -29,7 +28,6 @@ const KakaoSignUpComponent = () => {
         if (memberInfo.userId) {
             setMember({
                 userId: memberInfo.userId,
-                password: '',
                 name: memberInfo.name,
                 phone: '',
                 address: {
@@ -80,12 +78,6 @@ const KakaoSignUpComponent = () => {
         let error = '';
 
         switch(fieldName) {
-            case 'password':
-                if (!/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/.test(value)) {
-                    error = '비밀번호는 영문 대소문자, 숫자, 특수문자를 포함하여 8-20자여야 합니다';
-                }
-                break;
-            
             case 'name':
                 if (!/^[가-힣]{1,10}$/.test(value)) {
                     error = '이름은 한글 1자에서 10자까지 입력 가능합니다';
@@ -131,17 +123,6 @@ const KakaoSignUpComponent = () => {
                     onChange={handleChangeMember}
                     disabled></input>
                 </div>
-            </div>
-
-            <div className="flex flex-col mt-1">
-                <input className={`w-full p-3 border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-md`}
-                name="password"
-                type="password"
-                value={member.password || ''}
-                placeholder="비밀번호는 영문 대소문자, 숫자, 특수문자(@$!%*?&)를 포함하여 8-20자여야 합니다."
-                onChange={handleChangeMember}></input>
-
-            {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password}</p>}
             </div>
 
             <div className="flex flex-col mt-1">
