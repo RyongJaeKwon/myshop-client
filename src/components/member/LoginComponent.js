@@ -15,6 +15,7 @@ const LoginComponent = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const location = useLocation()
+    const from = location.state?.from || '/'
 
     const handleChange = (e) => {
         loginParam[e.target.name] = e.target.value
@@ -30,7 +31,6 @@ const LoginComponent = () => {
                 setErrMsg('아이디와 패스워드를 다시 확인해주세요');
             } else {
                 setErrMsg('');
-                const from = location.state?.from || '/';
                 navigate(from, { replace: true });
             }
         } catch (error) {
@@ -38,7 +38,7 @@ const LoginComponent = () => {
             setErrMsg('로그인에 실패했습니다');
         }
     }
-
+    
     return (
         <div className="border-2 border-blue-300 p-4 w-96">
             <div className="flex justify-center">
@@ -86,7 +86,7 @@ const LoginComponent = () => {
                     로그인
                 </button>
             </div>
-            <KakaoLoginComponent/>
+            <KakaoLoginComponent from={from}/>
         </div>
     )
 }
