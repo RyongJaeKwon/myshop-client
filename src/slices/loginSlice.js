@@ -13,16 +13,25 @@ const memberCookie = () => {
 }
 
 export const loginPostAsync = createAsyncThunk('loginPostAsync', async (loginParam,  {dispatch}) => {
-    const data = await loginPost(loginParam)
+    try {
+        const data = await loginPost(loginParam);
+        if (!data.error) {
+            setCookie("member", JSON.stringify(data), 1);
+            await dispatch(getCartItemsAsync());
+            return data;
+        }
+    } catch (error) {
+        console.error('Error loginPostAsync:', error);
+    }
+})
 
-    if (!data.error) {
-        setCookie("member", JSON.stringify(data), 1)
-        
-        const cartData = await dispatch(getCartItemsAsync())
-        const cartItemList = cartData.payload
-        localStorage.setItem('cartItemList', JSON.stringify(cartItemList))
-
-        return data
+export const loginAsync = createAsyncThunk('loginAsync', async (memberInfo, {dispatch}) => {
+    try {
+        dispatch(login(memberInfo))
+        await dispatch(getCartItemsAsync())
+        return memberInfo
+    } catch (error) {
+        console.error('Error loginAsync: ', error)
     }
 })
 
@@ -32,7 +41,8 @@ const loginSlice = createSlice({
     reducers: {
         login: (state, action) => {
             const data = action.payload
-            
+            setCookie("member", JSON.stringify(data), 1);
+
             return data
         },
         logout: (state) => {
@@ -44,6 +54,7 @@ const loginSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(loginPostAsync.fulfilled, (state, action) => {
             const data = action.payload
+            setCookie("member", JSON.stringify(data), 1)
 
             return data
         })
@@ -52,6 +63,11 @@ const loginSlice = createSlice({
         })
         .addCase(loginPostAsync.rejected, (state, action) => {
             console.log("rejected")
+        })
+        .addCase(loginAsync.fulfilled, (state, action) => {
+            const data = action.payload
+            
+            return data
         })
     }
 })
