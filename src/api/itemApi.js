@@ -18,6 +18,14 @@ export const getRecentList = async () => {
     return res.data
 }
 
+export const searchItemList = async (pageParam) => {
+    const {page, size, keyword} = pageParam
+
+    const res = await axios.get(`${host}/search`, {params:{page:page, size:size, keyword:keyword}})
+
+    return res.data
+}
+
 export const getRecentCategoryList = async (pageParam) => {
     const {category, page, size} = pageParam
 
