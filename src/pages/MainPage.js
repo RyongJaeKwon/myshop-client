@@ -3,6 +3,7 @@ import BaseLayout from "../layout/BaseLayout";
 import { getRecentList } from "../api/itemApi";
 import GridLayout from "./item/GridLayout";
 import ItemLayout from "./item/ItemLayout";
+import SearchComponent from "../components/item/SearchComponent";
 
 const MainPage = () => {
 const [serverData, setServerData] = useState({ recentItems: [] });
@@ -27,13 +28,16 @@ const toggleRefresh = () => {
 
 return (
     <BaseLayout toggleRefresh={toggleRefresh}>
-            <GridLayout>
-                {serverData.recentItems.map(item => (
-                        <ItemLayout key={item.id} item={item}/>
-                    ))
-                }
-            </GridLayout>
-        </BaseLayout>
+        <div className="mt-3">
+            <SearchComponent />
+        </div>
+        <GridLayout>
+            {serverData.recentItems.map(item => (
+                    <ItemLayout key={item.id} item={item}/>
+                ))
+            }
+        </GridLayout>
+    </BaseLayout>
     );
 };
 
