@@ -8,6 +8,7 @@ const HatPage = lazy(() => import("../pages/item/HatPage"))
 const ShoesPage = lazy(() => import("../pages/item/ShoesPage"))
 const AccPage = lazy(() => import("../pages/item/AccPage"))
 const ItemRead = lazy(() => import("../pages/item/ReadPage"))
+const SearchPage = lazy(() => import("../pages/item/SearchPage"))
 
 const itemRouter = () => {
     return [
@@ -38,6 +39,10 @@ const itemRouter = () => {
         {
             path: ":category/:id",
             element: <Suspense fallback={Loading}><ItemRead/></Suspense>
+        },
+        {
+            path: "search",
+            element: <Suspense fallback={Loading}><SearchPage/></Suspense>
         }
     ]
 }
