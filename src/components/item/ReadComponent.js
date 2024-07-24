@@ -128,7 +128,7 @@ const ReadComponent = () => {
                         <div className="w-1/3 ml-10">
                             <div className="flex justify-between items-center mb-2">
                                 <h2 className="text-2xl font-bold">{serverData.itemName}</h2>
-                                <span className="text-md">(리뷰: {serverData.replies})</span>
+                                <span className="text-md">(리뷰: {serverData.replies.length})</span>
                             </div>
 
                             <p className="text-sm mt-10 mb-10">{serverData.itemInfo}</p>
