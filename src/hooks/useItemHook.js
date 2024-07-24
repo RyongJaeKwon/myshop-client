@@ -43,7 +43,7 @@ const useItemHook = (category) => {
             queryStr = queryDefault
         }
 
-        navigate({pathname:`/items/search`, search:queryStr})
+        navigate({pathname:'/items/search', search:queryStr})
     }
 
     const moveToRead = (param) => {
@@ -63,13 +63,6 @@ const useItemHook = (category) => {
 
     }
 
-    const moveToSearch = (param) => {
-        const {page, size, keyword} = param
-        let queryStr = createSearchParams({page, size, keyword:keyword}).toString()
-
-        navigate({pathname:'/items/search', search:queryStr})
-    }
-
     const exceptionHandle = (error) => {
         const errMsg = error.response.data.error
 
@@ -84,7 +77,7 @@ const useItemHook = (category) => {
         }
     }
 
-    return {page, size, moveToList, moveToSearchList, moveToSearch, moveToRead, exceptionHandle}
+    return {page, size, moveToList, moveToSearchList, moveToRead, exceptionHandle}
 }
 
 export default useItemHook
