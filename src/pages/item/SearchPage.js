@@ -30,34 +30,39 @@ const SearchPage = () => {
     const size = parseInt(searchParams.get('size'))
 
     useEffect(() => {
-        const fetchSearchResults = async () => {
+        const fetchSearchResult = async () => {
             try {
-                const data = await searchItemList({page, size, keyword});
+                const data = await searchItemList({page, size, keyword})
                 setServerData(data);
             } catch (error) {
-                console.error('Error fetching search results:', error);
+                console.error('Error search result:', error)
             }
         };
 
-        fetchSearchResults();
-    }, [keyword, page, size]);
+        fetchSearchResult();
+    }, [keyword, page, size])
 
     return (
-        <div>
-            <SearchComponent/>
-            <GridLayout>
-                {serverData.dtoList && serverData.dtoList.length > 0 ? (
-                    serverData.dtoList.map(item => (
+        <div className="w-full h-full">
+            <div className="mt-3">
+                <SearchComponent initKeyword={keyword}/>
+            </div>
+            {serverData.dtoList && serverData.dtoList.length > 0 ? (
+                <GridLayout>
+                    {serverData.dtoList.map(item => (
                         <ItemLayout key={item.id} item={item} />
-                    ))
-                ) : (
-                    <p className="flex justify-center font-bold">검색 결과가 없습니다</p>
-                )}
-            </GridLayout>
-            
-            <Pagenation serverData={serverData} movePage={moveToSearchList}/>
+                    ))}
+                </GridLayout>
+            ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center mt-10">
+                        <p className="font-bold">검색 결과가 없습니다</p>
+                    </div>
+                </div>
+            )}
+            <Pagenation serverData={serverData} movePage={moveToSearchList} keyword={keyword}/>
         </div>
-    )
+    );
 }
 
 export default SearchPage
