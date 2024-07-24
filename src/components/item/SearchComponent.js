@@ -1,16 +1,16 @@
 import { useState } from "react"
 import useItemHook from "../../hooks/useItemHook"
 
-const SearchComponent = () => {
-    const [search, setSearch] = useState("")
-    const {page, size, moveToSearch} = useItemHook()
+const SearchComponent = ({initKeyword}) => {
+    const [search, setSearch] = useState(initKeyword)
+    const {page, size, moveToSearchList} = useItemHook()
 
     const handleSearchChange = (e) => {
         setSearch(e.target.value)
     }
 
     const handleSearchClick = () => {
-        moveToSearch({page, size, keyword:search})
+        moveToSearchList({page, size, keyword:search})
     }
 
     return(
