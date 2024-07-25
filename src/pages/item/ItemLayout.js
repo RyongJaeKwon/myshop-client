@@ -18,11 +18,10 @@ const ItemLayout = ({item, toggleRefresh}) => {
                     onClick={handleClickImage}/>
             )}
             <div className="flex justify-between mt-1">
-                <div>{item.color}</div>
+                <div className="font-bold">{item.itemName}</div>
                 <div>리뷰: {item.replies && Array.isArray(item.replies) ? item.replies.length : 0}</div>
             </div>
-                <div className="mt-2 font-bold">{item.itemName}</div>
-                <div className="mt-1">{item.size}</div>
+                <div className="mt-1">{item.size} / {item.color}</div>
                 <div className="mt-1">가격: {item.price}원</div>
             </div>
     )
