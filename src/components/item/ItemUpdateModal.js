@@ -18,7 +18,7 @@ const initState = {
     uploadFileNames: []
 }
 
-const ItemUpdateModal = ({closeUpdateModal, toggleRefresh, itemId}) => {
+const ItemUpdateModal = ({closeUpdateModal, itemId, refreshCart}) => {
     const [files, setFiles] = useState([])
     const [previews, setPreviews] = useState([])
     const uploadRef = useRef()
@@ -77,8 +77,7 @@ const ItemUpdateModal = ({closeUpdateModal, toggleRefresh, itemId}) => {
 
     const closeResultModal = () => {
         closeUpdateModal()
-        toggleRefresh()
-
+        refreshCart()
     }
 
     return(
