@@ -1,14 +1,15 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import useOrderHook from "../../hooks/useOrderHook"
 import { useSelector } from "react-redux"
 import useItemHook from "../../hooks/useItemHook"
+import ResultModal from "../common/ResultModal"
 
 const OrderListComponent = () => {
     const loginState = useSelector(state => state.loginSlice)
-    const orders = useSelector(state => state.orderSlice)
-    const {getOrders, moveToOrderDetail} = useOrderHook()
+    const orders = useSelector(state => state.orderSlice.orders)
+    const {getOrders, cancelOrder, moveToOrderList, moveToOrderDetail} = useOrderHook()
     const {exceptionHandle} = useItemHook()
-    console.log("orders: ", orders)
+    const [isResultModalOpen, setIsResultModalOpen] = useState(false)
 
     useEffect(() => {
         const getOrdersList = async () => {
@@ -29,6 +30,24 @@ const OrderListComponent = () => {
         moveToOrderDetail(orderId)
     }
 
+    const handleCancelOrderClick = async (orderId) => {
+        try {
+            await cancelOrder({userId: loginState.userId, orderId})
+            setIsResultModalOpen(true)
+        } catch (error) {
+            console.error("error: ", error)
+            exceptionHandle(error)
+        }
+    }
+
+    const closeResultModal = () => {
+        setIsResultModalOpen(false)
+        moveToOrderList()
+    }
+
+    const formatNumber = (number) => {
+        return new Intl.NumberFormat('ko-KR').format(number)
+    }
 
     return(
         <div className="w-full p-4">
@@ -38,17 +57,29 @@ const OrderListComponent = () => {
                     <div key={order.orderId} className="border p-4 mb-4 rounded-md">
                         <div className="flex justify-between mb-2">
                             <div>
-                                {/* <h3 className="text-lg font-semibold">Order ID: {order.orderId}</h3> */}
-                                <p className="text-gray-600 text-lg font-bold">{new Date(order.orderDate).toLocaleDateString()}</p>
-                                <p className="text-gray-600">주문금액: {order.totalPrice}원</p>
-                                <p className="text-gray-600">주문상태: {order.status}</p>
+                                <p className="text-lg font-bold">{new Date(order.orderDate).toLocaleDateString()}</p>
+                                <p className="text-gray-600 font-bold">주문금액: {formatNumber(order.totalPrice)}원</p>
+                                <p className="text-gray-600 font-bold">주문상태: {order.orderStatus}</p>
+                                <p className="text-gray-600 font-bold">배송현황: {order.deliveryStatus}</p>
                             </div>
-                            <button 
-                                onClick={() => handleOrderDetailClick(order.orderId)} 
-                                className="bg-blue-500 text-white px-2 rounded"
-                            >
-                                주문 상세보기
-                            </button>
+                            <div className="flex flex-col">
+                                {order.orderStatus !== 'CANCEL' && (
+                                    <>
+                                        <button 
+                                            onClick={() => handleOrderDetailClick(order.orderId)} 
+                                            className="bg-blue-500 text-white py-3 px-2 rounded"
+                                        >
+                                            주문 상세보기
+                                        </button>
+                                        <button
+                                            onClick={() => handleCancelOrderClick(order.orderId)}
+                                            className="bg-red-500 text-white py-3 px-2 rounded mt-2"
+                                        >
+                                            주문 취소
+                                        </button>
+                                    </>
+                                )}
+                            </div>
                         </div>
                         <div>
                             <h4 className="font-bold">주문한 상품</h4>
@@ -62,6 +93,7 @@ const OrderListComponent = () => {
                                 )}
                             </ul>
                         </div>
+                        {isResultModalOpen ? <ResultModal content={'주문취소가 완료되었습니다'} callbackFn={closeResultModal}/> : <></>}
                     </div>
                 ))
             ) : (
