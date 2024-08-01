@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { getOrdersAsync, orderCartPostAsync, orderPostAsync } from "../slices/orderSlice"
+import { cancelOrderAsync, getOrderItemsAsync, getOrdersAsync, orderCartPostAsync, orderPostAsync } from "../slices/orderSlice"
 import { useCallback } from "react"
 
 const useOrderHook = () => {
@@ -19,6 +19,14 @@ const useOrderHook = () => {
         dispatch(getOrdersAsync(userId))
     }, [dispatch])
 
+    const getOrderItems = useCallback(({userId, orderId}) => {
+        dispatch(getOrderItemsAsync({userId, orderId}))
+    }, [dispatch])
+
+    const cancelOrder = ({userId, orderId}) => {
+        dispatch(cancelOrderAsync({userId, orderId}))
+    }
+
     const moveToMain = () => {
         navigate('/')
     }
@@ -31,7 +39,7 @@ const useOrderHook = () => {
         navigate(`/orders/${orderId}`)
     }
 
-    return {postOrder, postCartOrder, getOrders, moveToMain, moveToOrderDetail, moveToOrderList}
+    return {postOrder, postCartOrder, getOrders, getOrderItems, cancelOrder, moveToMain, moveToOrderDetail, moveToOrderList}
 
 }
 
