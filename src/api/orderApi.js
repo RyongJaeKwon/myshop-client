@@ -21,14 +21,14 @@ export const getOrders = async (userId) => {
     return res.data
 }
 
-export const getOrderItems = async (userId, orderId) => {
+export const getOrderItems = async ({userId, orderId}) => {
     const res = await apiAxios.get(`${host}/${userId}/${orderId}`)
 
     return res.data
 }
 
-export const cancelOrder = async (userId, orderId) => {
-    const res = await apiAxios.delete(`${host}/${userId}/${orderId}`)
+export const cancelOrder = async ({userId, orderId}) => {
+    const res = await apiAxios.post(`${host}/${userId}/${orderId}`)
 
     return res.data
 }
