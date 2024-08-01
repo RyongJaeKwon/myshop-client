@@ -1,9 +1,8 @@
-import { FiUser } from "react-icons/fi";
 import { BsCart2 } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
-import { IoIosLogOut } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../slices/loginSlice";
+import useOrderHook from "../hooks/useOrderHook";
 
 
 const Header = () => {
@@ -11,6 +10,7 @@ const Header = () => {
     const cartItemList = useSelector(state => state.cartSlice.cartItemList)
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const {moveToOrderList} = useOrderHook()
 
     const handleLogout = () => {
         dispatch(logout())
@@ -23,15 +23,18 @@ const Header = () => {
                 <Link to={'/'}>My Shop</Link>
             </div>
 
-            <div className="flex ml-auto gap-4">
+            <div className="flex ml-auto gap-4 items-center">
                 {!loginState.userId ?
                 <div>
-                    <Link to={'/member/login'} className="text-black"><FiUser size={30} /></Link>
+                    <Link to={'/member/login'} className="text-black">Login</Link>
                 </div>
                 :
                 <>
                 <div>
-                    <button onClick={handleLogout} className="text-black"><IoIosLogOut size={30} /></button>
+                    <button onClick={moveToOrderList}>My Order</button>
+                </div>
+                <div>
+                    <button onClick={handleLogout} className="text-black">Logout</button>
                 </div>
                 <div>
                     <Link to={'/cart/list'} className="text-black"><BsCart2 size={30} />
