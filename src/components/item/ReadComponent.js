@@ -101,12 +101,6 @@ const ReadComponent = () => {
         setRefreshReplies(!refreshReplies)
     }
 
-    const handleButtonClick = (action) => {
-        if (action === "buy") {
-            console.log("구매하기");
-        }
-    }
-
     const handleDeleteClick = async () => {
         try {
             await deleteOne(id)
@@ -117,6 +111,10 @@ const ReadComponent = () => {
         } catch (error) {
             console.error("error: ", error)
         }
+    }
+
+    const handleBuyClick = () => {
+        navigate(`/orders`, {state: {item: serverData}})
     }
 
     const handleCartClick = () => {
@@ -153,7 +151,7 @@ const ReadComponent = () => {
     const closeResultModal = () => {
         setIsResultModalOpen(false)
         setRefreshReplies(!refreshReplies)
-    };
+    }
 
     if (loading) {
         return <div>Loading...</div>
@@ -201,7 +199,7 @@ const ReadComponent = () => {
                                 <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md mr-2 flex-1"
                                         onClick={() => handleCartClick()}>장바구니</button>
                                 <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex-1"
-                                        onClick={() => handleButtonClick("buy")}>구매하기</button>
+                                        onClick={() => handleBuyClick()}>구매하기</button>
                             </div>
                             <div className="flex justify-between items-center mt-2">
                                 {loginState.role === 'ROLE_ADMIN' && (
