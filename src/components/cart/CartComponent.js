@@ -119,11 +119,13 @@ const CartComponent = () => {
                 </div>
             )}
 
-            <div className="flex justify-center mt-10">
-                <button onClick={() => handleOrderClick()} className="bg-blue-500 text-white p-4 rounded mr-2 w-52">
-                    주문하기
-                </button>
-            </div>
+            {cartItemList.length > 0 && (
+                <div className="flex justify-center mt-10">
+                    <button onClick={() => handleOrderClick()} className="bg-blue-500 text-white p-4 rounded mr-2 w-52">
+                        주문하기
+                    </button>
+                </div>
+            )}
         </div>
     )
 }
