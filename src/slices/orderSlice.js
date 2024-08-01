@@ -21,14 +21,16 @@ export const getOrdersAsync = createAsyncThunk('getOrdersAsync', async (userId) 
     return response
 })
 
-export const getOrderItemsAsync = createAsyncThunk('getOrderItemsAsync', async (userId, orderId) => {
-    const response = await getOrderItems(userId, orderId)
+export const getOrderItemsAsync = createAsyncThunk('getOrderItemsAsync', async ({userId, orderId}) => {
+    const response = await getOrderItems({userId, orderId})
     return response
 })
 
-export const cancelOrderAsync = createAsyncThunk('cancelOrderAsync', async (userId, orderId) => {
-    const response = await cancelOrder(userId, orderId)
-    return response
+export const cancelOrderAsync = createAsyncThunk('cancelOrderAsync', async ({userId, orderId}, {dispatch}) => {
+    await cancelOrder({userId, orderId})
+
+    dispatch(getOrdersAsync(userId))
+
 })
 
 const orderSlice = createSlice({
@@ -38,26 +40,20 @@ const orderSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(orderPostAsync.fulfilled, (state, action) => {
             console.log("orderPostAsync fulfilled")
-            const data = action.payload
-
-            return data
+            state.orders = action.payload
         })
         .addCase(orderCartPostAsync.fulfilled, (state, action) => {
             console.log("orderCartPostAsync fulfilled")
-            const data = action.payload
-
-            return data
+            state.orders = action.payload
         })
         .addCase(getOrdersAsync.fulfilled, (state, action) => {
             console.log("getOrdersAsync fulfilled")
-            const data = action.payload
-
-            return data
+            state.orders = action.payload
         })
         .addCase(getOrderItemsAsync.fulfilled, (state, action) => {
             console.log("getOrderItemsAsync fulfilled")
-
-            state.orders = action.payload
+            
+            state.orderItems = action.payload
         })
         .addCase(cancelOrderAsync.fulfilled, (state, action) => {
             console.log("cancelOrderAsync fulfilled")
