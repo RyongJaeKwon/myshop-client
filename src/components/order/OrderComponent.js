@@ -4,13 +4,15 @@ import { useLocation } from "react-router-dom"
 import useOrderHook from "../../hooks/useOrderHook"
 import { API_SERVER_HOST } from "../../api/memberApi"
 import ResultModal from "../common/ResultModal"
+import useCartHook from "../../hooks/useCartHook"
 
 const OrderComponent = () => {
     const loginState = useSelector(state => state.loginSlice)
     const cartItemList = useSelector(state => state.cartSlice.cartItemList)
     const {state} = useLocation()
     const selectedItem  = state?.item || null
-    const {postOrder, moveToMain, moveToOrderList} = useOrderHook()
+    const {postOrder, postCartOrder, moveToMain, moveToOrderList} = useOrderHook()
+    const {refreshCart} = useCartHook()
     const [isResultModalOpen, setIsResultModalOpen] = useState(false)
     const host = API_SERVER_HOST
 
@@ -54,7 +56,11 @@ const OrderComponent = () => {
         }
 
         try {
-            await postOrder(orderObj)
+            if (selectedItem) {
+                await postOrder(orderObj)
+            } else {
+                await postCartOrder(orderObj)
+            }
             setIsResultModalOpen(true)
         } catch (error) {
             console.error("Order failed: ", error)
@@ -68,6 +74,7 @@ const OrderComponent = () => {
 
     const closeResultModal = () => {
         setIsResultModalOpen(false)
+        refreshCart()
         moveToOrderList()
     }
 
