@@ -2,12 +2,14 @@ import { useEffect, useMemo, useState } from "react"
 import useCartHook from "../../hooks/useCartHook"
 import { API_SERVER_HOST } from "../../api/memberApi"
 import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 
 const CartComponent = () => {
     const{ changeCart, deleteCartItem } = useCartHook()
     const loginState = useSelector(state => state.loginSlice)
     const cartItemList = useSelector(state => state.cartSlice.cartItemList)
     const [quantity, setQuantity] = useState({})
+    const navigate = useNavigate()
     const host = API_SERVER_HOST
 
     const total = useMemo(() => {
@@ -50,6 +52,10 @@ const CartComponent = () => {
 
     const handleClickDelete = (cartItemId) => {
         deleteCartItem(cartItemId)
+    }
+
+    const handleOrderClick = () => {
+        navigate(`/orders`)
     }
 
     return (
@@ -112,6 +118,12 @@ const CartComponent = () => {
                     총 금액: {formatNumber(total)}원
                 </div>
             )}
+
+            <div className="flex justify-center mt-10">
+                <button onClick={() => handleOrderClick()} className="bg-blue-500 text-white p-4 rounded mr-2 w-52">
+                    주문하기
+                </button>
+            </div>
         </div>
     )
 }
