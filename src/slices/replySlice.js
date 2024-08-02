@@ -13,8 +13,8 @@ export const updateReplyAsync = createAsyncThunk('updateReplyAsync', (replyObj) 
     return updateReply(replyObj)
 })
 
-export const deleteReplyAsync = createAsyncThunk('deleteReplyAsync', (id) => {
-    return deleteReply(id)
+export const deleteReplyAsync = createAsyncThunk('deleteReplyAsync', ({id, userId}) => {
+    return deleteReply({id, userId})
 })
 
 export const getReplyAsync = createAsyncThunk('getReplyAsync', (id) => {
