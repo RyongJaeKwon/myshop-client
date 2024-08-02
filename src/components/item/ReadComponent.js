@@ -87,17 +87,17 @@ const ReadComponent = () => {
         }
     }
 
-    const handleUpdateReply = async () => {
+    const handleUpdateReply = async (userId) => {
         if (editReply.trim()) {
-            await dispatch(updateReplyAsync({ id: editingReplyId, content: editReply }))
+            await dispatch(updateReplyAsync({ id: editingReplyId, content: editReply, userId: userId }))
             setRefreshReplies(!refreshReplies)
             setEditingReplyId(null)
             setEditReply('')
         }
     }
 
-    const handleDeleteReply = async (id) => {
-        await dispatch(deleteReplyAsync(id))
+    const handleDeleteReply = async ({id, userId}) => {
+        await dispatch(deleteReplyAsync({id, userId}))
         setRefreshReplies(!refreshReplies)
     }
 
@@ -242,7 +242,7 @@ const ReadComponent = () => {
                                                 <button className="bg-blue-500 p-1 text-sm text-white rounded-md mr-2"
                                                     onClick={() => {setEditingReplyId(reply.id); setEditReply(reply.content);}}>수정</button>
                                                 <button className="bg-red-500 p-1 text-sm text-white rounded-md"
-                                                    onClick={() => handleDeleteReply(reply.id)}>삭제</button>
+                                                    onClick={() => handleDeleteReply({id: reply.id, userId: reply.userId})}>삭제</button>
                                             </div>
                                         )}
                                     </div>
@@ -258,7 +258,7 @@ const ReadComponent = () => {
                                                 onChange={(e) => setEditReply(e.target.value)}
                                             />
                                             <button className="bg-blue-500 p-1 text-sm text-white rounded-md mr-2 mt-2"
-                                                    onClick={handleUpdateReply}>저장</button>
+                                                    onClick={() => handleUpdateReply(reply.userId)}>저장</button>
                                             <button className="bg-gray-500 p-1 text-sm text-white rounded-md mt-2"
                                                     onClick={() => { setEditingReplyId(null); setEditReply(''); }}>취소</button>
                                         </>
