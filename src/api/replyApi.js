@@ -15,8 +15,8 @@ export const updateReply = async (replyObj) => {
     return res.data
 }
 
-export const deleteReply = async (id) => {
-    const res = await apiAxios.delete(`${host}/${id}`)
+export const deleteReply = async ({id, userId}) => {
+    const res = await apiAxios.delete(`${host}/${id}?userId=${userId}`)
 
     return res.data
 }
