@@ -1,8 +1,8 @@
-# MyShop-Client
+# MyShop-client
 <br />
 
 ## 🖥 프로젝트 소개
-SpringBoot + React로 만든 쇼핑몰 개인 프로젝트 입니다
+**SpringBoot** + **React**로 만든 쇼핑몰 개인 프로젝트 입니다
 <br/>
 <br/>
 
